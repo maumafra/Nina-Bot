@@ -23,7 +23,7 @@ const helpEmbed = new EmbedBuilder()
 		{ name: `/${commandData.name}`, value: `${commandData.emoji} ${commandData.description}` },
         ...getCommands()
 	)
-	.setTimestamp()
+	.setTimestamp();
 
 module.exports = {
 	data: new SlashCommandBuilder()
