@@ -2,13 +2,23 @@
 //ver o arquivo deploy-commands
 
 const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
+const { Player } = require('discord-player');
 const dotenv = require('dotenv');
 
 dotenv.config();
 
 const { TOKEN } = process.env;
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.DirectMessages, GatewayIntentBits.GuildVoiceStates] });
+
+//Vai settar o player
+client.player = new Player(client, {
+	ytdlOptions:{
+		opusEncoded: true,
+		quality: "highestaudio",
+		highWaterMark: 1<<25
+	}
+});
 
 //Vai importar os comandos
 const fs = require('node:fs');
@@ -49,10 +59,10 @@ client.on(Events.InteractionCreate, async interaction => {
 	}
 
 	try {
-		await command.execute(interaction);
+		await command.execute(interaction, client);
 	} catch (error) {
 		console.error(error);
-		await interaction.reply({ content: 'Ocorreu um erro ao tentar executar esse comando!', ephemeral: true });
+		await interaction.editReply({ content: 'Ocorreu um erro ao tentar executar esse comando!', ephemeral: true });
 	}
 });
 
@@ -76,3 +86,9 @@ const getTimeUntilMidnight = () => {
 }
 
 setInterval(setDailyWord, getTimeUntilMidnight())
+
+
+//teste
+
+//client.player.on("trackStart", (client, track) => console.log(`Tocando o som **${track.title}**!`))
+//client.player.on("trackEnd", (client, track) => console.log(`Fim do som **${track.title}**!`))

@@ -305,8 +305,14 @@ class WordleGame{
 	
 		interaction.user.createDM().then(async channel => {
 			let lastBotMessage;
-	
-			lastBotMessage = await channel.send(this.buildGameMessage());
+			
+			try{
+				lastBotMessage = await channel.send(this.buildGameMessage());
+			} catch(error) {
+				console.error(error);
+				return interaction.followUp('Não consegui falar com você... 😿');
+			}
+			
 			//TODO: Colocar filtro pra só aceitar letras
 			const filter = m => m.author.id === interaction.user.id && m.content.length === 5
 			for(; this.game.tries.number < 6 && !this.game.finished; this.game.tries.number++){
