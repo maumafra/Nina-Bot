@@ -2,6 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 const commandData = {name: 'help', description: "Mostra todos os comandos do bot.", emoji: ':scroll:'};
 
+//TODO: fazer separação por categorias, ex: musica /play /skip 
 const getCommands = (() => {
     const fs = require('node:fs');
     const commandFiles = fs.readdirSync(__dirname).filter(file => file.endsWith('.js') && !file.includes('help')).sort();

@@ -32,6 +32,7 @@ for (const file of commandFiles) {
 //Logga o bot
 client.once(Events.ClientReady, c => {
 	console.log(`Pronto! Logado como ${c.user.tag}`);
+	setDailyWord();
 });
 
 client.login(TOKEN);
@@ -54,3 +55,24 @@ client.on(Events.InteractionCreate, async interaction => {
 		await interaction.reply({ content: 'Ocorreu um erro ao tentar executar esse comando!', ephemeral: true });
 	}
 });
+
+//Execução diária
+
+const wordle = require('./utils/wordleUtils');
+
+const setDailyWord = () => {
+	wordle.word = wordle.words[Math.floor(Math.random() * wordle.words.length)];
+	console.log(`Wordle: A palavra do dia é ${wordle.word}!`);
+	wordle.usersInCooldown = [];
+}
+
+const getTimeUntilMidnight = () => {
+	const midnight = new Date()
+	midnight.setHours(24)
+	midnight.setMinutes(0)
+	midnight.setSeconds(0)
+	midnight.setMilliseconds(0);
+	return midnight.getTime() - new Date().getTime();
+}
+
+setInterval(setDailyWord, getTimeUntilMidnight())
