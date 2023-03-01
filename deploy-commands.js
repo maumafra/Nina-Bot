@@ -31,8 +31,9 @@ const rest = new REST({ version:10 }).setToken(TOKEN);
         //PUT
         //Quando quiser fazer o deploy global, utilizar o Routes.applicationCommands(CLIENT_ID)
         //Quando quiser fazer o deploy para um único servidor, utilizar o Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID)
-        const data = await rest.put(
-            Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID),
+        await rest.put(
+            //Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID),
+            Routes.applicationCommands(CLIENT_ID),
             {body: commands}
         );
         console.log('Comandos registrados com sucesso!');

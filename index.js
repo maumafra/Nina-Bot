@@ -42,6 +42,7 @@ for (const file of commandFiles) {
 //Logga o bot
 client.once(Events.ClientReady, c => {
 	console.log(`Pronto! Logado como ${c.user.tag}`);
+	client.user.setActivity('comida fora do pote');
 	setDailyWord();
 });
 
@@ -66,29 +67,28 @@ client.on(Events.InteractionCreate, async interaction => {
 	}
 });
 
-//Execução diária
+//Aviso da música atual
+client.player.on("trackStart", (queue, track) => queue.metadata.channel.send(`🎵 Tocando o som **${track.title}**( ${track.url} )!`));
 
+//Execução diária
 const wordle = require('./utils/wordleUtils');
+const time = require('./utils/time');
+const logger = require('./utils/logger');
 
 const setDailyWord = () => {
 	wordle.word = wordle.words[Math.floor(Math.random() * wordle.words.length)];
-	console.log(`Wordle: A palavra do dia é ${wordle.word}!`);
+	logger.log(`Wordle: A palavra do dia é ${wordle.word}!`);
 	wordle.usersInCooldown = [];
 }
 
-const getTimeUntilMidnight = () => {
-	const midnight = new Date()
-	midnight.setHours(24)
-	midnight.setMinutes(0)
-	midnight.setSeconds(0)
-	midnight.setMilliseconds(0);
-	return midnight.getTime() - new Date().getTime();
-}
+setTimeout(() => {
+	//roda a primeira vez
+	setDailyWord();
+	//24*60*60*1000 = 86400000, ou seja 86400000ms === 24h
+	setInterval(setDailyWord, 86400000);
+}, time.getTimeUntilMidnight());
 
-setInterval(setDailyWord, getTimeUntilMidnight())
 
 
 //teste
-
-//client.player.on("trackStart", (client, track) => console.log(`Tocando o som **${track.title}**!`))
-//client.player.on("trackEnd", (client, track) => console.log(`Fim do som **${track.title}**!`))
+//client.player.on("trackEnd", (queue, track) => console.log(`Fim do som **${track.title}**!`))
