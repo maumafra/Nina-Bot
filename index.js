@@ -14,6 +14,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 //Vai settar o player
 client.player = new Player(client, {
 	ytdlOptions:{
+		filter: 'audioonly',
 		opusEncoded: true,
 		quality: "highestaudio",
 		highWaterMark: 1<<25
