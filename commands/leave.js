@@ -6,13 +6,13 @@ module.exports = {
         .setDescription('Faz eu sair do canal de voz.'),
     async execute(interaction, client) {
         await interaction.deferReply();
-        const queue = client.player.getQueue(interaction.guildId);
+        const queue = client.player.queues.get(interaction.guild);
 
         if(!queue){
-            return await interaction.editReply('Não tem nada na fila... 🙀');
+            return await interaction.editReply('Nem to aí doido... 🙀');
         }
 
-        queue.destroy();
+        queue.delete();
         await interaction.editReply('😾😾');
     },
     emoji: '😾',
