@@ -1,5 +1,5 @@
-// Utilizar o discord-player@5.3.2, pq a versão 5.4.0 está com defeito
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { QueryType } = require('discord-player');
 
 
 module.exports = {
@@ -23,11 +23,12 @@ module.exports = {
         const query = interaction.options.getString("query");
 
         const result = await client.player.search(query, {
-            requestedBy: interaction.user
+            requestedBy: interaction.user,
+            fallbackSearchEngine: QueryType.YOUTUBE_SEARCH
         });
 
         if (!result.hasTracks()) {
-            return interaction.followUp(`Não consegui achar isso 👉 **${query}**`)
+            return interaction.editReply(`Não consegui achar isso 👉 **${query}**`)
         }
 
         const options = {
@@ -36,6 +37,7 @@ module.exports = {
 				leaveOnEmpty: true,
 				leaveOnEnd: false,
 				pauseOnEmpty: true,
+                bufferingTimeout: 0,
                 metadata: {
                     channel: interaction.channel,
 					client: interaction.guild?.members.me,
@@ -45,7 +47,7 @@ module.exports = {
         }
 
         try {
-            const { track } = await client.player.play(interaction.member.voice.channel, query, options);
+            const { track } = await client.player.play(interaction.member.voice.channel, result, options);
     
             if (track.playlist) {
                 return interaction.followUp(`Colocando **${track.playlist.tracks.length}** sons desta playlist 👉 **${track.playlist.title}** na fila, a pedidos de ${interaction.user} 😸`);
