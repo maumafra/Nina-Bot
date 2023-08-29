@@ -6,17 +6,21 @@ module.exports = {
 		.setDescription('Pula uma música na fila.'),
 	async execute(interaction, client) {
 		await interaction.deferReply();
-        const queue = client.player.getQueue(interaction.guildId);
+        const queue = client.player.queues.get(interaction.guild);
 
         if(!queue){
-            return await interaction.editReply('Não tem nada na fila... 🙀')
+            return await interaction.editReply('Nem to aí doido... 🙀');
         }
 
-        const currentSong = queue.current;
+        if (!queue.currentTrack) {
+            return await interaction.editReply('Não ta tocando nada cara... 🙀');
+        }
 
-        queue.skip();
+        const currentSong = queue.currentTrack;
 
-        return await interaction.editReply(`Por ordens de 👉 ${interaction.user}, o som **${currentSong.title}** foi de Indra... 💀`)
+        queue.node.skip();
+
+        return await interaction.editReply(`Por ordens de  👉 ${interaction.user}, o som **${currentSong.title}** foi de Indra... 💀`)
 	},
 	emoji: '⏭️',
 };

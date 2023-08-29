@@ -16,10 +16,11 @@ client.player = new Player(client, {
 	ytdlOptions:{
 		filter: "audioonly",
 		opusEncoded: true,
-		quality: "highestaudio",
-		highWaterMark: 1<<25
+		quality: "highestaudio"
 	}
 });
+
+client.player.extractors.loadDefault();
 
 //Vai importar os comandos
 const fs = require('node:fs');
@@ -69,7 +70,7 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 //Aviso da música atual
-client.player.on("trackStart", (queue, track) => queue.metadata.channel.send(`🎵 Tocando o som **${track.title}**( ${track.url} )!`));
+client.player.events.on('playerStart', (queue, track) => queue.metadata.channel.send(`🎵  Tocando o som **${track.title}**( ${track.url} )!`));
 
 //Execução diária
 const wordle = require('./utils/wordleUtils');
