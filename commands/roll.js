@@ -19,8 +19,14 @@ module.exports = {
                 )),
     async execute(interaction, client) {
         const dice = Number(interaction.options._hoistedOptions[0].value);
-        const result = Math.floor(Math.random() * dice);
-        return await interaction.reply(result+'');
+        const result = Math.floor(Math.random() * dice) + 1;
+        if (result === 1) {
+            return await interaction.reply('🎲  '+result+'  💀');
+        }
+        if (result === dice) {
+            return await interaction.reply('🎲  '+result+'  ✨');
+        }
+        return await interaction.reply('🎲  '+result+'  🍃');
     },
     emoji: '🎲'
 };

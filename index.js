@@ -70,7 +70,7 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 //Aviso da música atual
-client.player.events.on('playerStart', (queue, track) => queue.metadata.channel.send(`🎵  Tocando o som **${track.title}**( ${track.url} )!`));
+client.player.events.on('playerStart', (queue, track) => queue.metadata.channel.send(`🎵  Tocando o som **${track.title}** ( ${track.url} )!`));
 
 //Execução diária
 const wordle = require('./utils/wordleUtils');
