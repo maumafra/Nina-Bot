@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('pause')
-        .setDescription('Pausa o som'),
+        .setDescription('Pausa o som.'),
     async execute(interaction, client) {
         await interaction.deferReply();
         const queue = client.player.queues.get(interaction.guild);
